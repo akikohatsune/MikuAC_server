@@ -343,19 +343,21 @@ function security.process(lines, state, config, ipt, logger, notifier)
       goto subnet_check
     end
 
-    local offense = state.offenses[ip] or { points = 0, strikes = 0, last_unban = 0, last_seen = now }
-    offense.points = offense.points + 1
-    offense.last_seen = now
-    state.offenses[ip] = offense
+    do
+      local offense = state.offenses[ip] or { points = 0, strikes = 0, last_unban = 0, last_seen = now }
+      offense.points = offense.points + 1
+      offense.last_seen = now
+      state.offenses[ip] = offense
 
-    local threshold, mult = adaptive_params(state, config, now)
-    if offense.points >= threshold then
-      local strikes = compute_strikes(offense, config)
-      local base = duration_for_strike(strikes, config)
-      local duration = base > 0 and math.max(1, math.floor(base * mult)) or 0
-      ban_ip(ip, duration, "failed login", state, config, ipt, logger, notifier, strikes, now)
-      offense.points = 0
-      offense.strikes = strikes
+      local threshold, mult = adaptive_params(state, config, now)
+      if offense.points >= threshold then
+        local strikes = compute_strikes(offense, config)
+        local base = duration_for_strike(strikes, config)
+        local duration = base > 0 and math.max(1, math.floor(base * mult)) or 0
+        ban_ip(ip, duration, "failed login", state, config, ipt, logger, notifier, strikes, now)
+        offense.points = 0
+        offense.strikes = strikes
+      end
     end
 
 ::subnet_check::
