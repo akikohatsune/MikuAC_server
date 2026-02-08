@@ -15,7 +15,7 @@ Miku keeps watch, stays light on resources, and does not miss a beat. This proje
 - Persistence: restore bans on boot, autosave state.
 - Housekeeping: unban on expiry, pruning, log rotate, emergency unlock.
 - Config hot-reload and firewall chain reconciliation.
-- Optional notifications: Telegram/Discord via `curl` with rate limiting.
+- Optional notifications: Telegram/Discord via `curl` with rate limiting (Discord supports webhook or bot token).
 - IPv6 support (requires `ip6tables` and Lua 5.3+ or `bit32`).
 
 ## Requirements
@@ -68,6 +68,19 @@ Wizard:
 ```sh
 lua setup.lua
 ```
+
+## Notifications (Telegram/Discord)
+Notifications are sent via `curl` with built-in rate limiting.
+
+Enable in `config.lua` (or `config.local.lua`):
+- `notification.enabled = true`
+- `notification.discord.enabled = true` (and/or `notification.telegram.enabled = true`)
+
+Discord options (choose one):
+- Webhook: set `notification.discord.webhook_url`.
+- Bot token: set `notification.discord.bot_token` + `notification.discord.channel_id`.
+- Or reuse the Python bot config: set `notification.discord.config_path = "discord_config.json"` (defaults to that path).
+  Requires `dkjson` or `lua-cjson` to parse JSON. If not installed, set `bot_token`/`channel_id` directly.
 
 ## Discord Sentinel (Cron)
 Configure `config.discord` with your bot token and channel ID. Then add cron:

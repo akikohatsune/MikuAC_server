@@ -28,7 +28,7 @@ function housekeeping.tick(state, config, ipt, logger)
   end
 
   for ip, rec in pairs(state.banned) do
-    if rec.until and rec.until > 0 and now >= rec.until then
+    if rec["until"] and rec["until"] > 0 and now >= rec["until"] then
       unban_ip(ip, state, ipt, logger)
       local off = state.offenses[ip] or { points = 0, strikes = rec.strikes or 1, last_unban = 0 }
       off.last_unban = now
@@ -38,7 +38,7 @@ function housekeeping.tick(state, config, ipt, logger)
   end
 
   for cidr, rec in pairs(state.subnet_banned) do
-    if rec.until and rec.until > 0 and now >= rec.until then
+    if rec["until"] and rec["until"] > 0 and now >= rec["until"] then
       unban_subnet(cidr, state, ipt, logger)
     end
   end

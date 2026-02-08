@@ -73,12 +73,12 @@ end
 
 -- Restore bans
 for ip, rec in pairs(st.banned) do
-  if not rec.until or rec.until == 0 or rec.until > util.now() then
+  if not rec["until"] or rec["until"] == 0 or rec["until"] > util.now() then
     ipt.ban("LUA_SENTINEL", ip)
   end
 end
 for cidr, rec in pairs(st.subnet_banned) do
-  if not rec.until or rec.until == 0 or rec.until > util.now() then
+  if not rec["until"] or rec["until"] == 0 or rec["until"] > util.now() then
     ipt.ban_subnet("LUA_SENTINEL", cidr)
   end
 end
@@ -126,12 +126,12 @@ local function loop()
       if now - last_chain_reconcile >= config.chain_reconcile_interval then
         ipt.ensure_chain("LUA_SENTINEL")
         for ip, rec in pairs(st.banned) do
-          if not rec.until or rec.until == 0 or rec.until > now then
+          if not rec["until"] or rec["until"] == 0 or rec["until"] > now then
             ipt.ban("LUA_SENTINEL", ip)
           end
         end
         for cidr, rec in pairs(st.subnet_banned) do
-          if not rec.until or rec.until == 0 or rec.until > now then
+          if not rec["until"] or rec["until"] == 0 or rec["until"] > now then
             ipt.ban_subnet("LUA_SENTINEL", cidr)
           end
         end

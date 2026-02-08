@@ -192,7 +192,12 @@ return {
     },
     discord = {
       enabled = false,
+      -- If webhook_url is set, it takes precedence.
       webhook_url = "",
+      -- For bot-based Discord (e.g., discord.py), reuse discord_config.json:
+      config_path = "discord_config.json",
+      bot_token = "",
+      channel_id = "",
     },
   },
 }
