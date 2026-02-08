@@ -92,7 +92,7 @@ python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 cp discord_config.json.example discord_config.json
-python discord_bot.py
+python main.py
 ```
 
 Commands:
